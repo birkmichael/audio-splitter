@@ -1,9 +1,9 @@
-'use strict';
+import { FFmpeg } from './vendor/ffmpeg/index.js';
 
 const MAX_BYTES = 48 * 1000 * 1000;   // strictly under 48 MB (decimal, the conservative reading)
 const BITRATE = 32000;                // opus @ 32 kbps
 // 32 kbps ≈ 4000 B/s plus Ogg overhead; start at a safe 3 h per part and shrink if a part is too big.
-let segSeconds = 3 * 3600;
+let segSeconds = Number(new URLSearchParams(location.search).get('seg')) || 3 * 3600;   // ?seg=N only for testing
 
 const $ = id => document.getElementById(id);
 const drop = $('drop'), input = $('file'), statusEl = $('status'), bar = $('bar'), out = $('out'), allBtn = $('all');
@@ -14,10 +14,9 @@ let urls = [];
 
 async function getFFmpeg() {
   if (ffmpeg) return ffmpeg;
-  const ff = new FFmpegWASM.FFmpeg();
+  const ff = new FFmpeg();
   ff.on('progress', ({ progress }) => { if (progress >= 0 && progress <= 1) bar.value = progress; });
   await ff.load({
-    classWorkerURL: new URL('vendor/814.ffmpeg.js', location.href).href,
     coreURL: new URL('vendor/ffmpeg-core.js', location.href).href,
     wasmURL: new URL('vendor/ffmpeg-core.wasm', location.href).href,
   });

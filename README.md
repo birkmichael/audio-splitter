@@ -15,7 +15,7 @@ Everything runs in the browser with [ffmpeg.wasm](https://ffmpegwasm.netlify.app
 python3 -m http.server 8000   # any static server works
 ```
 
-Then open http://localhost:8000. No build step. The ffmpeg.wasm files are vendored in `vendor/` (single-threaded core, so no special COOP/COEP headers are needed).
+Then open http://localhost:8000. No build step. The ffmpeg.wasm files are vendored in `vendor/` (ESM build, single-threaded core, so no special COOP/COEP headers are needed).
 
 ## Hosting
 
