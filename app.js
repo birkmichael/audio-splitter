@@ -66,6 +66,7 @@ async function process(file) {
       const code = await ff.exec([
         '-i', inPath,
         '-map', '0:a:0', '-vn', '-sn', '-dn',
+        '-ac', '1',   // mono: output feeds transcription
         '-c:a', 'libopus', '-b:a', '32k', '-vbr', 'constrained', '-application', 'audio',
         '-f', 'segment', '-segment_format', 'opus',
         '-segment_time', String(segSeconds), '-segment_start_number', '1', '-reset_timestamps', '1',
